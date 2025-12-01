@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CalendarIcon, Plus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,28 +30,45 @@ import { useTransactions } from "@/contexts/TransactionsContext";
 
 const categories = ["Food", "Rent", "Salary", "Transport", "Entertainment", "Shopping"];
 
-interface AddTransactionDialogProps {
-  trigger?: React.ReactNode;
+interface EditTransactionDialogProps {
+  transactionId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export function AddTransactionDialog({ trigger }: AddTransactionDialogProps) {
-  const { addTransaction } = useTransactions();
-  const [open, setOpen] = useState(false);
+export function EditTransactionDialog({
+  transactionId,
+  open,
+  onOpenChange,
+}: EditTransactionDialogProps) {
+  const { transactions, updateTransaction } = useTransactions();
+  const transaction = transactions.find((t) => t.id === transactionId);
+
   const [date, setDate] = useState<Date>();
   const [isIncome, setIsIncome] = useState(false);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
 
+  useEffect(() => {
+    if (transaction) {
+      setDate(new Date(transaction.date));
+      setIsIncome(transaction.type === "income");
+      setAmount(Math.abs(transaction.amount).toString());
+      setDescription(transaction.description);
+      setCategory(transaction.category);
+    }
+  }, [transaction]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!amount || !date || !description || !category) {
       return;
     }
 
     const numAmount = parseFloat(amount);
-    addTransaction({
+    updateTransaction(transactionId, {
       date: format(date, "yyyy-MM-dd"),
       description,
       category,
@@ -60,29 +76,18 @@ export function AddTransactionDialog({ trigger }: AddTransactionDialogProps) {
       type: isIncome ? "income" : "expense",
     });
 
-    // Reset form
-    setAmount("");
-    setDescription("");
-    setCategory("");
-    setDate(undefined);
-    setOpen(false);
+    onOpenChange(false);
   };
 
+  if (!transaction) return null;
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger || (
-          <Button size="lg" className="shadow-lg hover:shadow-xl transition-shadow">
-            <Plus className="mr-2 h-5 w-5" />
-            Add Transaction
-          </Button>
-        )}
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Transaction</DialogTitle>
+          <DialogTitle>Edit Transaction</DialogTitle>
           <DialogDescription>
-            Add a new income or expense transaction to your records.
+            Update the transaction details below.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
@@ -171,7 +176,7 @@ export function AddTransactionDialog({ trigger }: AddTransactionDialogProps) {
           </div>
 
           <Button type="submit" className="w-full">
-            Add Transaction
+            Update Transaction
           </Button>
         </form>
       </DialogContent>
