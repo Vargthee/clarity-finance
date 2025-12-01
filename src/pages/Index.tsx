@@ -1,66 +1,70 @@
-import { Wallet, TrendingUp, TrendingDown } from "lucide-react";
+import { Wallet, TrendingUp, TrendingDown, Plus } from "lucide-react";
+import { useMemo } from "react";
 import { SummaryCard } from "@/components/dashboard/SummaryCard";
-import { TransactionsTable, Transaction } from "@/components/dashboard/TransactionsTable";
+import { TransactionsTable } from "@/components/dashboard/TransactionsTable";
 import { AddTransactionDialog } from "@/components/dashboard/AddTransactionDialog";
-
-// Mock data for demonstration
-const mockTransactions: Transaction[] = [
-  {
-    id: "1",
-    date: "Dec 15, 2025",
-    description: "Monthly Salary",
-    category: "Salary",
-    amount: 5000,
-    type: "income",
-  },
-  {
-    id: "2",
-    date: "Dec 14, 2025",
-    description: "Grocery Shopping",
-    category: "Food",
-    amount: -120.50,
-    type: "expense",
-  },
-  {
-    id: "3",
-    date: "Dec 12, 2025",
-    description: "Monthly Rent",
-    category: "Rent",
-    amount: -1200,
-    type: "expense",
-  },
-  {
-    id: "4",
-    date: "Dec 10, 2025",
-    description: "Uber Ride",
-    category: "Transport",
-    amount: -25.30,
-    type: "expense",
-  },
-  {
-    id: "5",
-    date: "Dec 8, 2025",
-    description: "Movie Tickets",
-    category: "Entertainment",
-    amount: -35,
-    type: "expense",
-  },
-];
+import { useTransactions } from "@/contexts/TransactionsContext";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  const totalBalance = 8650.20;
-  const monthlyIncome = 5000;
-  const monthlyExpenses = 1380.80;
+  const { transactions } = useTransactions();
+
+  // Calculate totals
+  const { totalBalance, monthlyIncome, monthlyExpenses } = useMemo(() => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    const monthlyTransactions = transactions.filter((t) => {
+      const transDate = new Date(t.date);
+      return transDate.getMonth() === currentMonth && transDate.getFullYear() === currentYear;
+    });
+
+    const income = monthlyTransactions
+      .filter((t) => t.type === "income")
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const expenses = monthlyTransactions
+      .filter((t) => t.type === "expense")
+      .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+    const balance = transactions.reduce((sum, t) => sum + t.amount, 0);
+
+    return {
+      totalBalance: balance,
+      monthlyIncome: income,
+      monthlyExpenses: expenses,
+    };
+  }, [transactions]);
+
+  // Get recent 5 transactions
+  const recentTransactions = useMemo(() => {
+    return [...transactions]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 5)
+      .map((t) => ({
+        ...t,
+        date: new Date(t.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+      }));
+  }, [transactions]);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Welcome back! Here's your financial overview.</p>
         </div>
-        <AddTransactionDialog />
+        <AddTransactionDialog trigger={
+          <Button size="lg" className="shadow-lg hover:shadow-xl transition-shadow">
+            <Plus className="mr-2 h-5 w-5" />
+            Add Transaction
+          </Button>
+        } />
       </div>
 
       {/* Summary Cards */}
@@ -88,7 +92,7 @@ const Index = () => {
       {/* Recent Transactions */}
       <div className="space-y-4">
         <h2 className="text-2xl font-bold text-foreground">Recent Transactions</h2>
-        <TransactionsTable transactions={mockTransactions} />
+        <TransactionsTable transactions={recentTransactions} />
       </div>
     </div>
   );

@@ -1,11 +1,13 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useEffect, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function TopBar() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
@@ -21,7 +23,7 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 shadow-subtle">
       <div className="flex h-16 items-center px-4 gap-4">
-        <SidebarTrigger className="hover:bg-accent" />
+        {!isMobile && <SidebarTrigger className="hover:bg-accent" />}
         
         <div className="flex-1" />
         
