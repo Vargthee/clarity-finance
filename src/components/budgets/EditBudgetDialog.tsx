@@ -56,12 +56,12 @@ export function EditBudgetDialog({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="limit">Budget Limit ($)</Label>
+            <Label htmlFor="limit">Budget Limit (₦)</Label>
             <Input
               id="limit"
               type="number"
-              step="0.01"
-              placeholder="0.00"
+              step="1"
+              placeholder="0"
               value={limit}
               onChange={(e) => setLimit(e.target.value)}
             />
@@ -69,7 +69,7 @@ export function EditBudgetDialog({
 
           <div className="bg-muted p-3 rounded-lg text-sm">
             <p className="text-muted-foreground">
-              Current spending: <span className="font-semibold text-foreground">${budget.spent.toFixed(2)}</span>
+              Current spending: <span className="font-semibold text-foreground">₦{budget.spent.toLocaleString()}</span>
             </p>
           </div>
 

@@ -71,19 +71,19 @@ const Index = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <SummaryCard
           title="Total Balance"
-          amount={`$${totalBalance.toFixed(2)}`}
+          amount={`₦${totalBalance.toLocaleString()}`}
           icon={Wallet}
           variant="default"
         />
         <SummaryCard
           title="Monthly Income"
-          amount={`$${monthlyIncome.toFixed(2)}`}
+          amount={`₦${monthlyIncome.toLocaleString()}`}
           icon={TrendingUp}
           variant="income"
         />
         <SummaryCard
           title="Monthly Expenses"
-          amount={`$${monthlyExpenses.toFixed(2)}`}
+          amount={`₦${monthlyExpenses.toLocaleString()}`}
           icon={TrendingDown}
           variant="expense"
         />

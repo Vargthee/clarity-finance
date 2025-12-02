@@ -68,15 +68,15 @@ const Settings = () => {
                   All amounts will be displayed in this currency
                 </p>
               </div>
-              <Select defaultValue="usd">
+              <Select defaultValue="ngn">
                 <SelectTrigger className="w-32" id="currency">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="ngn">NGN (₦)</SelectItem>
                   <SelectItem value="usd">USD ($)</SelectItem>
                   <SelectItem value="eur">EUR (€)</SelectItem>
                   <SelectItem value="gbp">GBP (£)</SelectItem>
-                  <SelectItem value="jpy">JPY (¥)</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -110,24 +110,24 @@ export function EditGoalDialog({ goalId, open, onOpenChange }: EditGoalDialogPro
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="target">Target Amount ($)</Label>
+            <Label htmlFor="target">Target Amount (₦)</Label>
             <Input
               id="target"
               type="number"
-              step="0.01"
-              placeholder="0.00"
+              step="1"
+              placeholder="0"
               value={targetAmount}
               onChange={(e) => setTargetAmount(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="current">Current Amount ($)</Label>
+            <Label htmlFor="current">Current Amount (₦)</Label>
             <Input
               id="current"
               type="number"
-              step="0.01"
-              placeholder="0.00"
+              step="1"
+              placeholder="0"
               value={currentAmount}
               onChange={(e) => setCurrentAmount(e.target.value)}
             />

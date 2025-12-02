@@ -196,8 +196,8 @@ const Transactions = () => {
                         transaction.type === "income" ? "text-income" : "text-expense"
                       }
                     >
-                      {transaction.type === "income" ? "+" : "-"}$
-                      {Math.abs(transaction.amount).toFixed(2)}
+                      {transaction.type === "income" ? "+" : "-"}₦
+                      {Math.abs(transaction.amount).toLocaleString()}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">

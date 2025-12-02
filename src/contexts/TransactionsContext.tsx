@@ -42,14 +42,14 @@ interface TransactionsContextType {
 
 const TransactionsContext = createContext<TransactionsContextType | undefined>(undefined);
 
-// Initial mock data
+// Initial mock data with realistic Nigerian Naira amounts
 const initialTransactions: Transaction[] = [
   {
     id: "1",
     date: "2025-12-15",
     description: "Monthly Salary",
     category: "Salary",
-    amount: 5000,
+    amount: 650000,
     type: "income",
   },
   {
@@ -57,7 +57,7 @@ const initialTransactions: Transaction[] = [
     date: "2025-12-14",
     description: "Grocery Shopping",
     category: "Food",
-    amount: -120.50,
+    amount: -45000,
     type: "expense",
   },
   {
@@ -65,23 +65,23 @@ const initialTransactions: Transaction[] = [
     date: "2025-12-12",
     description: "Monthly Rent",
     category: "Rent",
-    amount: -1200,
+    amount: -180000,
     type: "expense",
   },
   {
     id: "4",
     date: "2025-12-10",
-    description: "Uber Ride",
+    description: "Bolt Ride",
     category: "Transport",
-    amount: -25.30,
+    amount: -3500,
     type: "expense",
   },
   {
     id: "5",
     date: "2025-12-08",
-    description: "Movie Tickets",
+    description: "Cinema Tickets",
     category: "Entertainment",
-    amount: -35,
+    amount: -8000,
     type: "expense",
   },
   {
@@ -89,7 +89,7 @@ const initialTransactions: Transaction[] = [
     date: "2025-11-28",
     description: "Freelance Project",
     category: "Salary",
-    amount: 800,
+    amount: 150000,
     type: "income",
   },
   {
@@ -97,7 +97,7 @@ const initialTransactions: Transaction[] = [
     date: "2025-11-25",
     description: "Restaurant Dinner",
     category: "Food",
-    amount: -85.20,
+    amount: -25000,
     type: "expense",
   },
   {
@@ -105,7 +105,7 @@ const initialTransactions: Transaction[] = [
     date: "2025-11-20",
     description: "New Shoes",
     category: "Shopping",
-    amount: -120,
+    amount: -35000,
     type: "expense",
   },
   {
@@ -113,7 +113,7 @@ const initialTransactions: Transaction[] = [
     date: "2025-11-15",
     description: "Monthly Salary",
     category: "Salary",
-    amount: 5000,
+    amount: 650000,
     type: "income",
   },
   {
@@ -121,15 +121,15 @@ const initialTransactions: Transaction[] = [
     date: "2025-11-12",
     description: "Monthly Rent",
     category: "Rent",
-    amount: -1200,
+    amount: -180000,
     type: "expense",
   },
   {
     id: "11",
     date: "2025-11-08",
-    description: "Gas Station",
+    description: "Fuel",
     category: "Transport",
-    amount: -60,
+    amount: -25000,
     type: "expense",
   },
   {
@@ -137,23 +137,23 @@ const initialTransactions: Transaction[] = [
     date: "2025-11-05",
     description: "Streaming Subscriptions",
     category: "Entertainment",
-    amount: -45,
+    amount: -12000,
     type: "expense",
   },
 ];
 
 const initialBudgets: Budget[] = [
-  { id: "1", category: "Food", limit: 500, spent: 205.70, icon: "🍔" },
-  { id: "2", category: "Rent", limit: 1200, spent: 1200, icon: "🏠" },
-  { id: "3", category: "Transport", limit: 200, spent: 85.30, icon: "🚗" },
-  { id: "4", category: "Entertainment", limit: 150, spent: 80, icon: "🎬" },
-  { id: "5", category: "Shopping", limit: 300, spent: 120, icon: "🛍️" },
+  { id: "1", category: "Food", limit: 100000, spent: 70000, icon: "🍔" },
+  { id: "2", category: "Rent", limit: 200000, spent: 180000, icon: "🏠" },
+  { id: "3", category: "Transport", limit: 50000, spent: 28500, icon: "🚗" },
+  { id: "4", category: "Entertainment", limit: 30000, spent: 20000, icon: "🎬" },
+  { id: "5", category: "Shopping", limit: 80000, spent: 35000, icon: "🛍️" },
 ];
 
 const initialGoals: Goal[] = [
-  { id: "1", title: "Emergency Fund", targetAmount: 10000, currentAmount: 3500, icon: "🎯" },
-  { id: "2", title: "Vacation to Hawaii", targetAmount: 5000, currentAmount: 1200, deadline: "2026-06-01", icon: "✈️" },
-  { id: "3", title: "New Laptop", targetAmount: 2000, currentAmount: 1800, icon: "📱" },
+  { id: "1", title: "Emergency Fund", targetAmount: 2000000, currentAmount: 750000, icon: "🎯" },
+  { id: "2", title: "Trip to Dubai", targetAmount: 1500000, currentAmount: 400000, deadline: "2026-06-01", icon: "✈️" },
+  { id: "3", title: "New Laptop", targetAmount: 800000, currentAmount: 650000, icon: "💻" },
 ];
 
 export function TransactionsProvider({ children }: { children: ReactNode }) {
@@ -181,7 +181,7 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
 
     toast({
       title: "Transaction added",
-      description: `${transaction.type === "income" ? "Income" : "Expense"} of $${Math.abs(transaction.amount).toFixed(2)} has been added`,
+      description: `${transaction.type === "income" ? "Income" : "Expense"} of ₦${Math.abs(transaction.amount).toLocaleString()} has been added`,
     });
   };
 

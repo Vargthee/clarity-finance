@@ -126,7 +126,7 @@ const Goals = () => {
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Progress</span>
                       <span className="font-semibold">
-                        ${goal.currentAmount.toFixed(2)} / ${goal.targetAmount.toFixed(2)}
+                        ₦{goal.currentAmount.toLocaleString()} / ₦{goal.targetAmount.toLocaleString()}
                       </span>
                     </div>
                     <Progress
@@ -155,7 +155,7 @@ const Goals = () => {
                       </div>
                     ) : (
                       <div className="text-sm font-medium text-foreground">
-                        ${remaining.toFixed(2)} remaining
+                        ₦{remaining.toLocaleString()} remaining
                       </div>
                     )}
                   </div>
