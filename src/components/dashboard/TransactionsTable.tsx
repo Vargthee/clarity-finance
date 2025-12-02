@@ -54,7 +54,7 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
               </TableCell>
               <TableCell className="text-right font-semibold">
                 <span className={transaction.type === "income" ? "text-income" : "text-expense"}>
-                  {transaction.type === "income" ? "+" : "-"}${Math.abs(transaction.amount).toFixed(2)}
+                  {transaction.type === "income" ? "+" : "-"}₦{Math.abs(transaction.amount).toLocaleString()}
                 </span>
               </TableCell>
             </TableRow>

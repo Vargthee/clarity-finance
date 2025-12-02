@@ -111,12 +111,12 @@ export function EditTransactionDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="amount">Amount ($)</Label>
+            <Label htmlFor="amount">Amount (₦)</Label>
             <Input
               id="amount"
               type="number"
-              step="0.01"
-              placeholder="0.00"
+              step="1"
+              placeholder="0"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />

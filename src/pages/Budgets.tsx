@@ -66,7 +66,7 @@ const Budgets = () => {
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Spent</span>
                     <span className="font-semibold">
-                      ${budget.spent.toFixed(2)} / ${budget.limit.toFixed(2)}
+                      ₦{budget.spent.toLocaleString()} / ₦{budget.limit.toLocaleString()}
                     </span>
                   </div>
                   <Progress
@@ -78,7 +78,7 @@ const Budgets = () => {
                 <div className="pt-2">
                   {isOverBudget ? (
                     <div className="text-sm font-medium text-expense">
-                      ⚠️ Over budget by ${(budget.spent - budget.limit).toFixed(2)}
+                      ⚠️ Over budget by ₦{(budget.spent - budget.limit).toLocaleString()}
                     </div>
                   ) : isWarning ? (
                     <div className="text-sm font-medium text-amber-600 dark:text-amber-400">

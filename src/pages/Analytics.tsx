@@ -138,7 +138,7 @@ const Analytics = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-income">
-              ${stats.income.toFixed(2)}
+              ₦{stats.income.toLocaleString()}
             </p>
           </CardContent>
         </Card>
@@ -151,7 +151,7 @@ const Analytics = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-expense">
-              ${stats.expenses.toFixed(2)}
+              ₦{stats.expenses.toLocaleString()}
             </p>
           </CardContent>
         </Card>
@@ -164,7 +164,7 @@ const Analytics = () => {
           </CardHeader>
           <CardContent>
             <p className={`text-3xl font-bold ${stats.savings >= 0 ? "text-income" : "text-expense"}`}>
-              ${stats.savings.toFixed(2)}
+              ₦{stats.savings.toLocaleString()}
             </p>
           </CardContent>
         </Card>
@@ -243,7 +243,7 @@ const Analytics = () => {
                     border: "1px solid hsl(var(--border))",
                     borderRadius: "8px",
                   }}
-                  formatter={(value: number) => `$${value.toFixed(2)}`}
+                  formatter={(value: number) => `₦${value.toLocaleString()}`}
                 />
               </PieChart>
             </ResponsiveContainer>
