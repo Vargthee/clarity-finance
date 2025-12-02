@@ -1,4 +1,4 @@
-import { LayoutDashboard, Receipt, BarChart3, Wallet, Settings, Menu } from "lucide-react";
+import { LayoutDashboard, Receipt, BarChart3, Wallet, Settings, Menu, Target } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -27,6 +27,7 @@ const menuItems = [
   { title: "Transactions", url: "/transactions", icon: Receipt },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Budgets", url: "/budgets", icon: Wallet },
+  { title: "Goals", url: "/goals", icon: Target },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 

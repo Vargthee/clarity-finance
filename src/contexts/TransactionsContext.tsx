@@ -18,13 +18,26 @@ export interface Budget {
   icon: string;
 }
 
+export interface Goal {
+  id: string;
+  title: string;
+  targetAmount: number;
+  currentAmount: number;
+  deadline?: string;
+  icon?: string;
+}
+
 interface TransactionsContextType {
   transactions: Transaction[];
   budgets: Budget[];
+  goals: Goal[];
   addTransaction: (transaction: Omit<Transaction, "id">) => void;
   updateTransaction: (id: string, transaction: Omit<Transaction, "id">) => void;
   deleteTransaction: (id: string) => void;
   updateBudget: (id: string, limit: number) => void;
+  addGoal: (goal: Omit<Goal, "id">) => void;
+  updateGoal: (id: string, goal: Omit<Goal, "id">) => void;
+  deleteGoal: (id: string) => void;
 }
 
 const TransactionsContext = createContext<TransactionsContextType | undefined>(undefined);
@@ -137,9 +150,16 @@ const initialBudgets: Budget[] = [
   { id: "5", category: "Shopping", limit: 300, spent: 120, icon: "🛍️" },
 ];
 
+const initialGoals: Goal[] = [
+  { id: "1", title: "Emergency Fund", targetAmount: 10000, currentAmount: 3500, icon: "🎯" },
+  { id: "2", title: "Vacation to Hawaii", targetAmount: 5000, currentAmount: 1200, deadline: "2026-06-01", icon: "✈️" },
+  { id: "3", title: "New Laptop", targetAmount: 2000, currentAmount: 1800, icon: "📱" },
+];
+
 export function TransactionsProvider({ children }: { children: ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [budgets, setBudgets] = useState<Budget[]>(initialBudgets);
+  const [goals, setGoals] = useState<Goal[]>(initialGoals);
 
   const addTransaction = (transaction: Omit<Transaction, "id">) => {
     const newTransaction: Transaction = {
@@ -235,15 +255,53 @@ export function TransactionsProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const addGoal = (goal: Omit<Goal, "id">) => {
+    const newGoal: Goal = {
+      ...goal,
+      id: Date.now().toString(),
+    };
+    setGoals((prev) => [newGoal, ...prev]);
+
+    toast({
+      title: "Goal created",
+      description: `Your goal "${goal.title}" has been created`,
+    });
+  };
+
+  const updateGoal = (id: string, updatedGoal: Omit<Goal, "id">) => {
+    setGoals((prev) =>
+      prev.map((goal) => (goal.id === id ? { ...updatedGoal, id } : goal))
+    );
+
+    toast({
+      title: "Goal updated",
+      description: "Your goal has been updated successfully",
+    });
+  };
+
+  const deleteGoal = (id: string) => {
+    setGoals((prev) => prev.filter((g) => g.id !== id));
+
+    toast({
+      title: "Goal deleted",
+      description: "The goal has been removed",
+      variant: "destructive",
+    });
+  };
+
   return (
     <TransactionsContext.Provider
       value={{
         transactions,
         budgets,
+        goals,
         addTransaction,
         updateTransaction,
         deleteTransaction,
         updateBudget,
+        addGoal,
+        updateGoal,
+        deleteGoal,
       }}
     >
       {children}
