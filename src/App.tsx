@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Transactions from "./pages/Transactions";
 import Analytics from "./pages/Analytics";
 import Budgets from "./pages/Budgets";
+import Goals from "./pages/Goals";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +35,7 @@ const App = () => (
                     <Route path="/transactions" element={<Transactions />} />
                     <Route path="/analytics" element={<Analytics />} />
                     <Route path="/budgets" element={<Budgets />} />
+                    <Route path="/goals" element={<Goals />} />
                     <Route path="/settings" element={<Settings />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
