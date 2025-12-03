@@ -32,35 +32,59 @@ const categoryColors: Record<string, string> = {
 
 export function TransactionsTable({ transactions }: TransactionsTableProps) {
   return (
-    <div className="rounded-lg border bg-card shadow-card">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="font-semibold">Date</TableHead>
-            <TableHead className="font-semibold">Description</TableHead>
-            <TableHead className="font-semibold">Category</TableHead>
-            <TableHead className="text-right font-semibold">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {transactions.map((transaction) => (
-            <TableRow key={transaction.id} className="hover:bg-accent/50 transition-colors cursor-pointer">
-              <TableCell className="font-medium">{transaction.date}</TableCell>
-              <TableCell>{transaction.description}</TableCell>
-              <TableCell>
-                <Badge variant="outline" className={categoryColors[transaction.category] || "bg-secondary"}>
-                  {transaction.category}
-                </Badge>
-              </TableCell>
-              <TableCell className="text-right font-semibold">
-                <span className={transaction.type === "income" ? "text-income" : "text-expense"}>
-                  {transaction.type === "income" ? "+" : "-"}₦{Math.abs(transaction.amount).toLocaleString()}
-                </span>
-              </TableCell>
+    <>
+      {/* Desktop Table View */}
+      <div className="hidden sm:block rounded-lg border bg-card shadow-card overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="font-semibold">Date</TableHead>
+              <TableHead className="font-semibold">Description</TableHead>
+              <TableHead className="font-semibold">Category</TableHead>
+              <TableHead className="text-right font-semibold">Amount</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {transactions.map((transaction) => (
+              <TableRow key={transaction.id} className="hover:bg-accent/50 transition-colors cursor-pointer">
+                <TableCell className="font-medium whitespace-nowrap">{transaction.date}</TableCell>
+                <TableCell className="max-w-[200px] truncate">{transaction.description}</TableCell>
+                <TableCell>
+                  <Badge variant="outline" className={categoryColors[transaction.category] || "bg-secondary"}>
+                    {transaction.category}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right font-semibold whitespace-nowrap">
+                  <span className={transaction.type === "income" ? "text-income" : "text-expense"}>
+                    {transaction.type === "income" ? "+" : "-"}₦{Math.abs(transaction.amount).toLocaleString()}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="sm:hidden space-y-3">
+        {transactions.map((transaction) => (
+          <div 
+            key={transaction.id} 
+            className="rounded-lg border bg-card shadow-card p-4 space-y-2"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">{transaction.date}</span>
+              <Badge variant="outline" className={`text-xs ${categoryColors[transaction.category] || "bg-secondary"}`}>
+                {transaction.category}
+              </Badge>
+            </div>
+            <p className="font-medium text-sm truncate">{transaction.description}</p>
+            <p className={`text-lg font-bold ${transaction.type === "income" ? "text-income" : "text-expense"}`}>
+              {transaction.type === "income" ? "+" : "-"}₦{Math.abs(transaction.amount).toLocaleString()}
+            </p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

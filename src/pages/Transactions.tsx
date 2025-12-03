@@ -100,17 +100,17 @@ const Transactions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Transactions</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Transactions</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Manage all your financial transactions
           </p>
         </div>
         <AddTransactionDialog trigger={
-          <Button size="lg" className="shadow-lg hover:shadow-xl transition-shadow">
+          <Button size="default" className="shadow-lg hover:shadow-xl transition-shadow w-full sm:w-auto">
             <Plus className="mr-2 h-5 w-5" />
             Add Transaction
           </Button>
@@ -118,7 +118,7 @@ const Transactions = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4 bg-card p-4 rounded-lg shadow-card">
+      <div className="flex flex-col gap-3 bg-card p-3 sm:p-4 rounded-lg shadow-card">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -128,33 +128,34 @@ const Transactions = () => {
             className="pl-10"
           />
         </div>
-        
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full md:w-48">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((cat) => (
-              <SelectItem key={cat} value={cat}>
-                {cat === "all" ? "All Categories" : cat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row">
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-full sm:w-40">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat === "all" ? "All Categories" : cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select value={sortOrder} onValueChange={(value: "asc" | "desc") => setSortOrder(value)}>
-          <SelectTrigger className="w-full md:w-48">
-            <SelectValue placeholder="Sort by date" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="desc">Newest First</SelectItem>
-            <SelectItem value="asc">Oldest First</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select value={sortOrder} onValueChange={(value: "asc" | "desc") => setSortOrder(value)}>
+            <SelectTrigger className="w-full sm:w-40">
+              <SelectValue placeholder="Sort" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="desc">Newest First</SelectItem>
+              <SelectItem value="asc">Oldest First</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Table */}
-      <div className="rounded-lg border bg-card shadow-card">
+      {/* Desktop Table */}
+      <div className="hidden sm:block rounded-lg border bg-card shadow-card overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -178,10 +179,10 @@ const Transactions = () => {
                   key={transaction.id}
                   className="hover:bg-accent/50 transition-colors"
                 >
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium whitespace-nowrap">
                     {format(new Date(transaction.date), "MMM dd, yyyy")}
                   </TableCell>
-                  <TableCell>{transaction.description}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">{transaction.description}</TableCell>
                   <TableCell>
                     <Badge
                       variant="outline"
@@ -190,7 +191,7 @@ const Transactions = () => {
                       {transaction.category}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-semibold">
+                  <TableCell className="text-right font-semibold whitespace-nowrap">
                     <span
                       className={
                         transaction.type === "income" ? "text-income" : "text-expense"
@@ -225,6 +226,63 @@ const Transactions = () => {
             )}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="sm:hidden space-y-3">
+        {paginatedTransactions.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground bg-card rounded-lg shadow-card">
+            No transactions found
+          </div>
+        ) : (
+          paginatedTransactions.map((transaction) => (
+            <div
+              key={transaction.id}
+              className="rounded-lg border bg-card shadow-card p-4 space-y-3"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">
+                  {format(new Date(transaction.date), "MMM dd, yyyy")}
+                </span>
+                <Badge
+                  variant="outline"
+                  className={`text-xs ${categoryColors[transaction.category] || "bg-secondary"}`}
+                >
+                  {transaction.category}
+                </Badge>
+              </div>
+              <p className="font-medium text-sm">{transaction.description}</p>
+              <div className="flex items-center justify-between">
+                <span
+                  className={`text-lg font-bold ${
+                    transaction.type === "income" ? "text-income" : "text-expense"
+                  }`}
+                >
+                  {transaction.type === "income" ? "+" : "-"}₦
+                  {Math.abs(transaction.amount).toLocaleString()}
+                </span>
+                <div className="flex gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setEditingTransaction(transaction.id)}
+                    className="hover:bg-primary/10 hover:text-primary h-8 w-8"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setDeletingTransaction(transaction.id)}
+                    className="hover:bg-destructive/10 hover:text-destructive h-8 w-8"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Pagination */}
