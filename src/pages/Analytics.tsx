@@ -108,17 +108,17 @@ const Analytics = () => {
   }, [filteredTransactions]);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Analytics</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Visualize your spending patterns and trends
           </p>
         </div>
         <Select value={timeRange} onValueChange={(value: "30days" | "ytd") => setTimeRange(value)}>
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-full sm:w-48">
             <SelectValue placeholder="Select time range" />
           </SelectTrigger>
           <SelectContent>
@@ -129,41 +129,41 @@ const Analytics = () => {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <Card className="shadow-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
               Total Income
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-income">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-income">
               ₦{stats.income.toLocaleString()}
             </p>
           </CardContent>
         </Card>
 
         <Card className="shadow-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
               Total Expenses
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-expense">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-expense">
               ₦{stats.expenses.toLocaleString()}
             </p>
           </CardContent>
         </Card>
 
         <Card className="shadow-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
               Net Savings
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className={`text-3xl font-bold ${stats.savings >= 0 ? "text-income" : "text-expense"}`}>
+            <p className={`text-xl sm:text-2xl lg:text-3xl font-bold ${stats.savings >= 0 ? "text-income" : "text-expense"}`}>
               ₦{stats.savings.toLocaleString()}
             </p>
           </CardContent>
@@ -171,26 +171,27 @@ const Analytics = () => {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Monthly Spending Trend */}
         <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle>Monthly Spending Trend</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Monthly Spending Trend</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250} className="sm:!h-[300px]">
               <LineChart data={monthlyTrendData}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="date" className="text-xs" />
-                <YAxis className="text-xs" />
+                <XAxis dataKey="date" className="text-xs" tick={{ fontSize: 10 }} />
+                <YAxis className="text-xs" tick={{ fontSize: 10 }} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "hsl(var(--card))",
                     border: "1px solid hsl(var(--border))",
                     borderRadius: "8px",
+                    fontSize: "12px",
                   }}
                 />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: "12px" }} />
                 <Line
                   type="monotone"
                   dataKey="income"
@@ -212,11 +213,11 @@ const Analytics = () => {
 
         {/* Expenses by Category */}
         <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle>Expenses by Category</CardTitle>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Expenses by Category</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250} className="sm:!h-[300px]">
               <PieChart>
                 <Pie
                   data={categoryData}
@@ -226,7 +227,7 @@ const Analytics = () => {
                   label={({ name, percent }) =>
                     `${name}: ${(percent * 100).toFixed(0)}%`
                   }
-                  outerRadius={100}
+                  outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -242,6 +243,7 @@ const Analytics = () => {
                     backgroundColor: "hsl(var(--card))",
                     border: "1px solid hsl(var(--border))",
                     borderRadius: "8px",
+                    fontSize: "12px",
                   }}
                   formatter={(value: number) => `₦${value.toLocaleString()}`}
                 />

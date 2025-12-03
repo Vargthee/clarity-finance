@@ -43,18 +43,18 @@ const Goals = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Savings Goals</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Savings Goals</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Track your financial goals and savings progress
           </p>
         </div>
         <AddGoalDialog
           trigger={
-            <Button size="lg" className="shadow-lg hover:shadow-xl transition-shadow">
+            <Button size="default" className="shadow-lg hover:shadow-xl transition-shadow w-full sm:w-auto">
               <Plus className="mr-2 h-5 w-5" />
               Add Goal
             </Button>
@@ -65,10 +65,10 @@ const Goals = () => {
       {/* Goals Grid */}
       {goals.length === 0 ? (
         <Card className="shadow-card">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Target className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No Goals Yet</h3>
-            <p className="text-muted-foreground text-center mb-4">
+          <CardContent className="flex flex-col items-center justify-center py-8 sm:py-12">
+            <Target className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mb-4" />
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">No Goals Yet</h3>
+            <p className="text-sm sm:text-base text-muted-foreground text-center mb-4">
               Start tracking your financial goals and watch your progress grow
             </p>
             <AddGoalDialog
@@ -82,7 +82,7 @@ const Goals = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {goals.map((goal) => {
             const percentage = getProgressPercentage(goal.currentAmount, goal.targetAmount);
             const isComplete = goal.currentAmount >= goal.targetAmount;

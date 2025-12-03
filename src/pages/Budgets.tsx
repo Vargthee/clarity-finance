@@ -22,17 +22,17 @@ const Budgets = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <div className="min-h-screen bg-background p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Budgets</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Budgets</h1>
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">
           Track your spending against budget limits
         </p>
       </div>
 
       {/* Budget Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {budgets.map((budget) => {
           const percentage = getProgressPercentage(budget.spent, budget.limit);
           const isOverBudget = budget.spent >= budget.limit;
